@@ -2,11 +2,11 @@
 	#PROBLEM-01
 \******************************************************************************/
 
-var outer = function(){
-  var name = 'Tyler';
-  return function(){
-    return 'The original name was ' + name;
-  }
+var outer = function() {
+    var name = 'Tyler';
+    return function() {
+        return 'The original name was ' + name;
+    }
 };
 
 /****** INSTRUCTIONS PROBLEM 1 ******/
@@ -15,11 +15,10 @@ closure over the name variable. Invoke outer saving the return value into
 another variable called 'inner'. */
 
 // Code Here
-
+inner = outer();
 //Once you do that, invoke inner.
-
+inner();
 //Code Here
-
 
 
 
@@ -34,12 +33,13 @@ another variable called 'inner'. */
 \******************************************************************************/
 
 
-var callFriend = function(){
-  var friend = 'Jake';
-  function callF(number){
-    return 'Calling ' + friend + ' at ' + number;
-  }
-  return callF;
+var callFriend = function() {
+    var friend = 'Jake';
+
+    function callF(number) {
+        return 'Calling ' + friend + ' at ' + number;
+    }
+    return callF;
 };
 
 /****** INSTRUCTIONS PROBLEM 2 ******/
@@ -47,8 +47,9 @@ var callFriend = function(){
 Create a makeCall function that when invoked logs 'Calling Jake at 435-215-9248'
 in your console. */
 
-  //Code Here
-
+//Code Here
+var makeCall = callFriend(435 - 325 - 9248);
+makeCall();
 
 
 
@@ -67,14 +68,18 @@ in your console. */
 properly. */
 
 //Code Here
-
-//Uncomment this once you make your function
-//   var count = makeCounter();
-//   count(); // 1
-//   count(); // 2
-//   count(); // 3
-//   count(); // 4
-
+function makeCounter() {
+    var total = 0;
+    return function() {
+        return total += 1;
+    };
+}
+// Uncomment this once you make your function
+var count = makeCounter();
+count(); // 1
+count(); // 2
+count(); // 3
+count(); // 4
 
 
 
@@ -97,16 +102,20 @@ the module pattern to achieve this. */
 
 function counterFactory(value) {
 
-  // Code here.
+    // Code here.
 
-
-  return {
-  }
+    return {
+        inc: function() {
+            return value += 1;
+        },
+        dec: function() {
+            return value -= 1;
+        }
+    };
 }
 
 
 counter = counterFactory(10);
-
 
 
 
@@ -124,20 +133,21 @@ counter = counterFactory(10);
 /* Inside the motivation function create another function called message that
 will return 'You're doing awesome, keep it up firstname lastname.' */
 
-function motivation(firstname, lastname){
+function motivation(firstname, lastname) {
 
-  var welcomeText = 'You\'re doing awesome, keep it up ';
+    var welcomeText = 'You\'re doing awesome, keep it up ';
 
-  // code message function here.
+    // code message function here.
+    function message() {
+        return "You're doing awesome, keep it up " + firstname + " " + lastname + ".";
+    };
 
-
-  //Uncommment this to return the value of your invoked message function
-  //return message();
+    //Uncommment this to return the value of your invoked message function
+    return message();
 
 }
 
 motivation('Billy', 'Bob'); // 'Your doing awesome keep it up Billy Bob
-
 
 
 
@@ -157,28 +167,30 @@ invokes privateMethod. After you create the privateMethod. Invoke it by calling
 module.publicMethod(); outside the module scope */
 
 var module = (function() {
-  var person = {
-    name: "phillip",
-    age: 29,
-    location: 'Utah'
-  };
+    var person = {
+        name: "phillip",
+        age: 29,
+        location: 'Utah'
+    };
 
-  var privateMethod = function(){
-    return "Hi, I'm " + person.name + ", age " + person.age + " from " + person.location;
-  };
+    var privateMethod = function() {
+        return "Hi, I'm " + person.name + ", age " + person.age + " from " + person.location;
+    };
 
-  // Anything that is being returned is made public and can be invoked from
-	// outside our lexical scope
+    // Anything that is being returned is made public and can be invoked from
+    // outside our lexical scope
 
-  return {
-    // Code here.
-  };
+    return {
+        // Code here.
+        publicMethod: function() {
+            return privateMethod();
+        },
+    };
 
 })();
 
 // Uncomment this after you create your public method
-//   module.publicMethod();
-
+module.publicMethod();
 
 
 
@@ -199,15 +211,15 @@ then 3, etc). Run this code in your console to see what the output is. */
 
 // To make this code work you will need to create a new scope for every iteration.
 function timeOutCounter() {
-  for (var i = 0; i <= 5; i++) {
-    setTimeout(function() {
-      console.log(i);
-    }, i * 1000)
-  }
+    for (var i = 0; i <= 5; i++) {
+        newScope(i);
+    }
 
-  function newScope(i) {
-    console.log(i)
-  }
+    function newScope(a) {
+      setTimeout(function() {
+          console.log(a);
+      }, a * 1000);
+    }
 }
 timeOutCounter();
 
@@ -221,6 +233,17 @@ timeOutCounter();
 \******************************************************************************/
 
 var funcArray = [];
+
+function func(num){
+  return function(){
+    return num;
+  };
+}
+
+for(var i=0; i<6; i++){
+  funcArray.push(func(i));
+}
+
 
 /*
   Make the following code work
